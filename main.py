@@ -1,72 +1,84 @@
 import streamlit as st
-import pandas as pd
 
-# 1. إعدادات الصفحة الاحترافية
+# 1. إعدادات الصفحة
 st.set_page_config(page_title="دليل المربي الذكي Pro", layout="wide")
 
-# 2. لمسة التصميم العالمية (أبيض + أخضر ملكي + رمادي)
+# 2. تصميم احترافي بتباين عالي (High Contrast) لسهولة القراءة
 st.markdown("""
     <style>
-    .main { background-color: #f8f9fa; }
-    .stMetric { background-color: white; padding: 15px; border-radius: 10px; border: 1px solid #e0e0e0; }
-    .stButton>button { 
-        width: 100%; border-radius: 8px; height: 50px; font-weight: bold;
-        background-color: #1e5631; color: white; border: none;
+    .main { background-color: #f0f2f6; }
+    /* تعديل المربعات لتكون واضحة جداً */
+    .stNumberInput div div input {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+        font-weight: bold !important;
+        font-size: 20px !important;
+        border: 2px solid #1e5631 !important;
     }
-    h1, h2, h3 { color: #1e5631; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-    .card { background-color: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+    /* تعديل العناوين فوق المربعات */
+    label {
+        color: #1e5631 !important;
+        font-weight: bold !important;
+        font-size: 18px !important;
+    }
+    .stMetric {
+        background-color: #ffffff;
+        border: 2px solid #1e5631;
+        border-radius: 10px;
+        box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+    }
+    .stTabs [data-baseweb="tab-list"] { gap: 10px; }
+    .stTabs [data-baseweb="tab"] {
+        background-color: #e0e0e0;
+        border-radius: 5px 5px 0 0;
+        padding: 10px 20px;
+        color: #1e5631 !important;
+    }
     </style>
     """, unsafe_allow_html=True)
 
-# 3. الهيدر (العنوان)
-st.title("🚜 دليل المربي الذكي | Smart Breeder")
-st.write("النسخة الاحترافية لإدارة التسمين وتركيب الأعلاف")
+# 3. العنوان الرئيسي
+st.title("🚜 دليل المربي الذكي - سوبر بريمكس")
 
-# 4. القائمة الرئيسية (Tabs) مثل البرامج العالمية
-tab1, tab2, tab3 = st.tabs(["📊 لوحة التحكم", "🧪 مختبر الخلطات", "💰 حساب الأرباح"])
+# 4. الأقسام
+tab1, tab2, tab3 = st.tabs(["📊 بورصة السوق", "🧪 ماكينة الخلط", "💰 حساب الأرباح"])
 
 with tab1:
-    st.subheader("📈 نبض السوق ومالية المزرعة")
-    col1, col2, col3, col4 = st.columns(4)
-    col1.metric("سعر الذرة اليوم", "13,500 ج", "-200")
-    col2.metric("سعر الصويا", "24,000 ج", "+500")
-    col3.metric("رأس المال الميداني", "450,000 ج")
-    col4.metric("الأرباح المتوقعة", "85,000 ج", "12%", delta_color="normal")
-    
-    st.info("💡 نصيحة الذكاء الاصطناعي: أسعار البدائل (البسكويت) حالياً أوفر بنسبة 15% من الذرة.")
+    st.subheader("💹 أسعار الخامات اليوم")
+    c1, c2, c3 = st.columns(3)
+    c1.metric("الذرة الصفراء", "13,500 ج")
+    c2.metric("كسب صويا 44%", "24,000 ج")
+    c3.metric("نخالة (ردة)", "11,500 ج")
+    st.write("---")
+    st.caption("ملاحظة: الأسعار استرشادية وتختلف حسب المنطقة والمورد.")
 
 with tab2:
-    st.subheader("🧪 تركيب خلطة الـ (18% بروتين) الموفرة")
-    with st.container():
-        st.markdown('<div class="card">', unsafe_allow_html=True)
-        c1, c2 = st.columns(2)
-        with c1:
-            corn = st.number_input("الذرة الصفراء (كيلو):", value=500)
-            soya = st.number_input("صويا 44% (كيلو):", value=200)
-            bran = st.number_input("نخالة (ردة) (كيلو):", value=150)
-        with c2:
-            alt_type = st.selectbox("البديل المتاح:", ["بسكويت ناعم", "عجينة بلح", "مكرونة"])
-            alt_qty = st.number_input(f"{alt_type} (كيلو):", value=120)
-            premix = st.number_input("سوبر بريمكس (إضافات) (كيلو):", value=30)
-        
-        total_w = corn + soya + bran + alt_qty + premix
-        st.write(f"### إجمالي الوزن: {total_w} كيلو")
-        
-        if total_w == 1000:
-            st.success("✅ التركيبة متزنة تماماً (1 طن)")
-        else:
-            st.warning(f"باقي {1000 - total_w} كيلو لتقفيل الطن")
-        st.markdown('</div>', unsafe_allow_html=True)
+    st.subheader("🧪 تركيب الخلطة الحالية")
+    col1, col2 = st.columns(2)
+    with col1:
+        corn = st.number_input("الذرة (كيلو):", value=500, step=25)
+        soya = st.number_input("الصويا (كيلو):", value=200, step=10)
+        bran = st.number_input("الردة (كيلو):", value=150, step=10)
+    with col2:
+        alt = st.number_input("البدائل (بسكويت/بلح):", value=120, step=10)
+        premix = st.number_input("إضافات (سوبر بريمكس):", value=30, step=1)
+    
+    total = corn + soya + bran + alt + premix
+    st.write(f"### الإجمالي الحالي: {total} كيلو")
+    
+    if total == 1000:
+        st.success("✅ الوزن مضبوط: 1 طن")
+    else:
+        st.info(f"باقي {1000 - total} كيلو على الطن")
 
 with tab3:
-    st.subheader("💰 دراسة جدوى دورة الـ 10 عجول")
-    buy_price = st.number_input("سعر شراء العجل الواحد (متوسط):", value=45000)
-    feed_cost = st.number_input("تكلفة العلف الإجمالية للعجل:", value=25000)
-    sell_expected = st.number_input("سعر البيع المتوقع للعجل:", value=85000)
-    
-    net_profit = (sell_expected - (buy_price + feed_cost)) * 10
-    st.markdown(f"<h2 style='text-align:center; color: #2e7d32;'>صافي الربح المتوقع للدورة: {net_profit:,.0f} جنيه</h2>", unsafe_allow_html=True)
+    st.subheader("💰 آلة حساب الأرباح")
+    st.write("أدخل بيانات التكلفة والبيع:")
+    b1, b2 = st.columns(2)
+    buy = b1.number_input("سعر الشراء:", value=45000)
+    sell = b2.number_input("سعر البيع المتوقع:", value=85000)
+    profit = (sell - buy) * 10
+    st.markdown(f"### صافي ربح الدورة (10 رؤوس): {profit:,.0f} جنيه")
 
-# 5. التذييل
 st.markdown("---")
-st.caption("دليل المربي الذكي Pro - جميع الحقوق محفوظة لشركة سوبر بريمكس 2026")
+st.caption("إخلاء مسؤولية: هذا البرنامج أداة حسابية مساعدة، وقرار البيع والشراء ومكونات العلف تقع تحت مسؤولية المستخدم بالكامل.")
