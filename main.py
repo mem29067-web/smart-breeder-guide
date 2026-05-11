@@ -1,45 +1,42 @@
+
 import streamlit as st
 
-# 1. إعدادات الصفحة
-st.set_page_config(page_title="دليل المربي الذكي", layout="wide")
+# إعدادات الصفحة
+st.set_page_config(page_title="سوبر بريمكس", layout="centered")
 
-# 2. تصميم الواجهة بالثور الأسود والخطوط الواضحة
+# التصميم الاحترافي
 st.markdown("""
     <style>
+    .main { background-color: #1a1a1a; }
     .stApp {
-        background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
+        background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), 
                     url("https://r.jina.ai/i/058690f3-93ba-42f0-91a5-812328479901");
-        background-size: cover; background-position: center; background-attachment: fixed;
+        background-size: cover;
     }
-    .main-title { text-align: center; color: white; font-size: 35px; font-weight: bold; text-shadow: 2px 2px 4px #000; padding: 20px; }
-    .stTabs [data-baseweb="tab-list"] { background-color: rgba(255,255,255,0.1); border-radius: 10px; }
-    .stTabs [data-baseweb="tab"] { color: white !important; font-weight: bold; font-size: 18px; }
-    label { color: white !important; font-weight: bold; font-size: 18px !important; }
+    h1 { color: #ffd700; text-align: center; font-size: 28px !important; }
+    .stButton>button { 
+        background-color: #2e7d32; color: white; border-radius: 10px; 
+        height: 60px; font-size: 18px; width: 100%;
+    }
+    label { color: white !important; font-size: 16px !important; }
     </style>
     """, unsafe_allow_html=True)
 
-st.markdown('<p class="main-title">🐂 دليل المربي الذكي - سوبر بريمكس</p>', unsafe_allow_html=True)
+st.title("🐂 دليل المربي الذكي")
+st.write("<p style='text-align:center; color:white;'>مرحباً بك في النسخة الاحترافية</p>", unsafe_allow_html=True)
 
-# 3. الأقسام (التبويبات)
-tab1, tab2, tab3 = st.tabs(["🏠 الرئيسية", "🚜 ماكينة العلف", "💰 حاسبة الأرباح"])
+# الأزرار
+col1, col2 = st.columns(2)
+with col1:
+    st.button("📈 البورصة")
+    st.button("🚜 الماكينة")
+with col2:
+    st.button("🤖 المستشار")
+    st.button("💰 الأرباح")
 
-with tab1:
-    st.markdown('<div style="background-color:rgba(0,0,0,0.5); padding:20px; border-radius:15px; color:white; text-align:center;">', unsafe_allow_html=True)
-    st.write("### أهلاً بك يا هندسة في تطبيقك الخاص")
-    st.write("تم تحديث: **بورصة الخامات والبدائل** ✅")
-    st.markdown('</div>', unsafe_allow_html=True)
-
-with tab2:
-    st.subheader("🚜 تركيبات العلف والبدائل الموفرة")
-    corn_qty = st.number_input("كمية الذرة (كيلو):", value=500)
-    alt_qty = st.number_input("كمية البديل (بلح/بسكويت) كيلو:", value=150)
-    soya_qty = st.number_input("كمية الصويا (كيلو):", value=200)
-    premix_qty = st.number_input("البريمكس والإضافات (كيلو):", value=30)
-    
-    total = corn_qty + alt_qty + soya_qty + premix_qty
-    st.metric("إجمالي وزن الخلطة:", f"{total} كيلو")
-    if total == 1000: st.success("✅ الخلطة كملت طن!")
-
-with tab3:
-    st.subheader("💰 حسابات دورة الـ 10 عجول")
-    st.write("سيتم ربطها بأسعار البورصة قريباً.")
+# الماكينة البسيطة
+st.markdown("---")
+st.subheader("🚜 تجربة ماكينة الخلط")
+corn = st.number_input("الذرة (كيلو):", value=500)
+alt = st.number_input("البدائل (كيلو):", value=200)
+st.success(f"الإجمالي: {corn + alt} كيلو")
