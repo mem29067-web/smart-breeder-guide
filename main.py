@@ -1,109 +1,104 @@
 import streamlit as st
+import pandas as pd
 
 # 1. إعدادات الصفحة الفخمة
-st.set_page_config(page_title="دليل المربي الذكي Pro", layout="wide")
+st.set_page_config(page_title="منظومة المربي الذكي Pro", layout="wide")
 
-# 2. هندسة الألوان (Dark Metallic & RTL)
-st.markdown("""
+# 2. هندسة الواجهة (Dark Metallic + RTL + Premium Locking)
+st.markdown(f"""
     <style>
-    .main { direction: rtl; text-align: right; }
-    .stApp { background: linear-gradient(135deg, #0d1a10 0%, #1b3d26 100%) !important; }
-    .main-title { color: #ffffff; text-align: center; font-size: 32px !important; font-weight: 900; padding: 15px; text-shadow: 2px 2px 10px #000; }
+    .main {{ direction: rtl; text-align: right; }}
+    .stApp {{ background: linear-gradient(135deg, #0d1a10 0%, #1b3d26 100%) !important; }}
+    .main-title {{ color: #ffffff; text-align: center; font-size: 35px !important; font-weight: 900; padding: 20px; text-shadow: 2px 2px 10px #000; }}
     
-    /* تنسيق الجداول */
-    .custom-table { 
+    /* ستايل الجداول */
+    .custom-table {{ 
         width: 100%; border-collapse: collapse; 
         background-color: rgba(255, 255, 255, 0.05); color: white; 
-        border-radius: 12px; overflow: hidden; direction: rtl; margin-bottom: 20px;
-    }
-    .custom-table thead tr { background-color: #28a745; color: #ffffff; }
-    .custom-table th, .custom-table td { padding: 12px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); text-align: center; }
-    .custom-table td:first-child { text-align: right; font-weight: bold; background-color: rgba(40, 167, 69, 0.1); width: 35%; }
+        border-radius: 15px; overflow: hidden; direction: rtl; margin-bottom: 25px;
+    }}
+    .custom-table thead tr {{ background-color: #1e7e34; color: #ffffff; }}
+    .custom-table th, .custom-table td {{ padding: 12px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); text-align: center; }}
+    .custom-table td:first-child {{ text-align: right; font-weight: bold; background-color: rgba(40, 167, 69, 0.1); }}
     
-    /* ستايل الكتابة */
-    label, p, h1, h2, h3, .stTabs [data-baseweb="tab"] { color: #ffffff !important; font-weight: bold !important; }
-    .premium-lock { color: #f1c40f !important; font-weight: bold; }
-    .stNumberInput div div input { background-color: #ffffff !important; color: #000 !important; font-weight: bold !important; }
+    /* قفل الأقسام البريميوم */
+    .locked-section {{
+        background: rgba(0,0,0,0.85);
+        padding: 50px;
+        border-radius: 20px;
+        text-align: center;
+        border: 2px dashed #f1c40f;
+        margin-top: 20px;
+    }}
+    .premium-text {{ color: #f1c40f; font-size: 24px; font-weight: bold; margin-bottom: 15px; }}
+    .whatsapp-btn {{
+        background-color: #25d366; color: white !important; padding: 10px 25px;
+        border-radius: 30px; text-decoration: none; font-weight: bold; display: inline-block;
+    }}
+    
+    label, p, h1, h2, h3, .stTabs [data-baseweb="tab"] {{ color: #ffffff !important; font-weight: bold !important; }}
     </style>
     """, unsafe_allow_html=True)
 
-st.markdown('<h1 class="main-title">🚜 منظومة المربي الذكي: البورصة والتحليل الفني</h1>', unsafe_allow_html=True)
+st.markdown('<h1 class="main-title">🚜 منظومة المربي الذكي: النسخة الاحترافية</h1>', unsafe_allow_html=True)
 
-# 3. إدارة البيانات (لوحة التحكم السرية)
-if 'price_list' not in st.session_state:
-    st.session_state.price_list = {
-        "ذرة أرجنتيني": "13,500", "ذرة برازيلي": "13,500", "صويا 44%": "24,000",
-        "صويا 46%": "25,000", "ردة محلي": "11,200", "جيلوتين": "42,000", "دي دي جي": "18,500"
+# 3. مخزن البيانات الافتراضي (يمكنك تعديله من لوحة التحكم بالداخل)
+if 'prices' not in st.session_state:
+    st.session_state.prices = {
+        "ذرة أرجنتيني": "13,500", "ذرة برازيلي": "13,500", "ذرة أوكراني": "12,200",
+        "صويا 44%": "24,000", "صويا 46%": "25,000", "ردة محلي": "11,200",
+        "جيلوتين": "42,000", "دي دي جي": "18,500", "زيت صويا": "52,000"
     }
 
-# 4. الأقسام الرئيسية
-tab1, tab2, tab3, tab4 = st.tabs(["💎 مركز البورصة", "🔬 تحليل الخامات", "💵 الأرباح", "⚙️ الإدارة"])
+# رسالة القفل الموحدة
+def premium_lock():
+    st.markdown(f"""
+    <div class="locked-section">
+        <div class="premium-text">🔒 هذا القسم متاح للمشتركين فقط</div>
+        <p>للاشتراك في باقة "المربي الذكي" والوصول للحاسبة والتحاليل الكاملة:</p>
+        <a href="https://wa.me/201090102035" class="whatsapp-btn">تواصل عبر واتساب: 01090102035</a>
+    </div>
+    """, unsafe_allow_html=True)
 
-# --- القسم الأول: البورصة ---
+# 4. الأقسام الرئيسية (Tabs)
+tab1, tab2, tab3, tab4 = st.tabs(["💰 اسعار الخامات", "🔬 تحليل خامات الأعلاف", "🧮 حاسبة الأعلاف", "⚙️ الإدارة"])
+
+# --- القسم الأول: الأسعار (مجاني) ---
 with tab1:
-    sub1, sub2 = st.tabs(["🌾 جدول ميست المحدث", "🌍 المؤشرات العالمية"])
-    with sub1:
-        html_mist = f"""
+    col_a, col_b = st.columns([3, 1])
+    with col_a:
+        st.markdown("### 📊 بورصة الخامات (تحديث لحظي)")
+        html_prices = f"""
         <table class="custom-table">
-            <thead><tr><th>اسم السلعة</th><th>السعر (طن)</th><th>التغيير</th><th>ملاحظات</th></tr></thead>
+            <thead><tr><th>الخامة</th><th>السعر (طن)</th><th>التغيير</th></tr></thead>
             <tbody>
-                <tr><td>ذرة صفراء أرجنتيني</td><td>{st.session_state.price_list['ذرة أرجنتيني']}</td><td>-100</td><td>صب أرضه</td></tr>
-                <tr><td>ذرة صفراء برازيلي</td><td>{st.session_state.price_list['ذرة برازيلي']}</td><td>-100</td><td>صب أرضه</td></tr>
-                <tr><td>كسب صويا محلي 44%</td><td>{st.session_state.price_list['صويا 44%']}</td><td>-</td><td>صب أرضه</td></tr>
-                <tr><td>كسب صويا محلي 46%</td><td>{st.session_state.price_list['صويا 46%']}</td><td>-</td><td>صب أرضه</td></tr>
-                <tr><td>ردة محلي (Bran)</td><td>{st.session_state.price_list['ردة محلي']}</td><td>-</td><td>معبأ وصال</td></tr>
-                <tr><td>جيلوتين مستورد</td><td>{st.session_state.price_list['جيلوتين']}</td><td>+100</td><td>صب أرضه</td></tr>
-                <tr><td>دي دي جي (DDGS)</td><td>{st.session_state.price_list['دي دي جي']}</td><td>-</td><td>معبأ أرضه</td></tr>
+                {"".join([f"<tr><td>{k}</td><td>{v}</td><td>-</td></tr>" for k, v in st.session_state.prices.items()])}
             </tbody>
         </table>"""
-        st.markdown(html_mist, unsafe_allow_html=True)
-    with sub2:
-        c1, c2 = st.columns(2)
-        c1.metric("الدولار (تحديث تلقائي)", "48.35 ج")
-        c2.metric("ذهب عيار 24", "3,850 ج")
+        st.markdown(html_prices, unsafe_allow_html=True)
+    with col_b:
+        st.metric("الدولار الأمريكي", "48.40 ج")
+        st.metric("ذهب عيار 24", "3,850 ج")
 
-# --- القسم الثاني: تحليل الخامات والبدائل ---
+# --- القسم الثاني: تحليل الخامات (مغلق بالكامل) ---
 with tab2:
-    sub_a, sub_b = st.tabs(["🌾 الخامات الأساسية", "💡 البدائل والكنوز"])
-    with sub_a:
-        html_basic = """
-        <table class="custom-table">
-            <thead><tr><th>الخامة</th><th>البروتين %</th><th>الطاقة</th><th>الألياف</th></tr></thead>
-            <tbody>
-                <tr><td>ذرة صفراء</td><td>8.5%</td><td>3350</td><td>2.2%</td></tr>
-                <tr><td>صويا 44%</td><td>44%</td><td>2230</td><td>7.0%</td></tr>
-                <tr><td>نخالة قمح</td><td>14%</td><td>1300</td><td>10.0%</td></tr>
-            </tbody>
-        </table>"""
-        st.markdown(html_basic, unsafe_allow_html=True)
-    with sub_b:
-        html_alt = """
-        <table class="custom-table">
-            <thead><tr><th>البديل المبتكر</th><th>البروتين %</th><th>الطاقة</th><th>الحالة</th></tr></thead>
-            <tbody>
-                <tr><td>بسكويت مصانع</td><td>9%</td><td>3800</td><td>✅ متاح</td></tr>
-                <tr><td>شيكولاتة هالك</td><td>6%</td><td>4200</td><td>✅ متاح</td></tr>
-                <tr class="premium-lock"><td>🔒 سوبر بريمكس (سر المهنة)</td><td>خاص</td><td>عالية</td><td>⭐ بريميوم</td></tr>
-                <tr class="premium-lock"><td>🔒 مسحوق بروتين الحشرات</td><td>70%</td><td>وسط</td><td>⭐ بريميوم</td></tr>
-            </tbody>
-        </table>"""
-        st.markdown(html_alt, unsafe_allow_html=True)
+    premium_lock()
 
-# --- القسم الثالث: الأرباح ---
+# --- القسم الثالث: حاسبة الأعلاف (مغلق بالكامل) ---
 with tab3:
-    st.markdown('<div style="background:rgba(40,167,69,0.2); padding:30px; border-radius:15px; text-align:center; border:1px solid #28a745;"><h2>صافي الربح التقديري: 85,000 ج.م</h2></div>', unsafe_allow_html=True)
+    premium_lock()
 
-# --- القسم الرابع: لوحة التحكم (لك أنت فقط) ---
+# --- القسم الرابع: لوحة التحكم (خاصة بك) ---
 with tab4:
-    st.subheader("🔐 لوحة التحكم في الأسعار")
-    pwd = st.text_input("أدخل كلمة المرور للتعديل:", type="password")
-    if pwd == "1234": # تقدر تغير الباسورد ده
-        st.success("تم تسجيل الدخول.. عدل الأسعار واضغط حفظ")
-        new_price = st.text_input("سعر الذرة الأرجنتيني الجديد:", value=st.session_state.price_list["ذرة أرجنتيني"])
-        if st.button("تحديث وحفظ"):
-            st.session_state.price_list["ذرة أرجنتيني"] = new_price
+    st.subheader("🔐 إدارة النظام")
+    pwd = st.text_input("باسورد المدير:", type="password")
+    if pwd == "admin123":
+        st.success("مرحباً يا هندسة! عدل الأسعار هنا:")
+        for x in st.session_state.prices:
+            st.session_state.prices[x] = st.text_input(f"سعر {x}:", value=st.session_state.prices[x])
+        if st.button("حفظ جميع التعديلات"):
             st.rerun()
     else:
-        st.warning("هذا القسم مخصص لإدارة التطبيق فقط.")
+        st.info("سجل دخولك لتعديل بيانات البورصة.")
 
-st.markdown("<br><p style='text-align:center; opacity:0.5;'>تصميم: سوبر بريمكس - الإصدار العالمي 2026</p>", unsafe_allow_html=True)
+st.markdown("<br><p style='text-align:center; opacity:0.5;'>تطوير: منظومة المربي الذكي 2026 | جميع الحقوق محفوظة</p>", unsafe_allow_html=True)
