@@ -19,7 +19,7 @@ st.markdown("""
     }
     .sub-title {
         background-color: #176b99;
-        color: white;
+        color: black;
         padding: 6px;
         text-align: center;
         border-radius: 5px;
