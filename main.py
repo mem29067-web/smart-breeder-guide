@@ -35,7 +35,7 @@ st.markdown("""
     }
     .custom-table th {
         background-color: #0b4c73;
-        color: black;
+        color: white;
         text-align: center;
         padding: 8px;
         border: 1px solid #ddd;
@@ -44,7 +44,7 @@ st.markdown("""
         text-align: center;
         padding: 8px;
         border: 1px solid #ddd;
-        background-color: #f9f9f9;
+        background-color: #blue;
     }
     .text-right {
         text-align: right !important;
