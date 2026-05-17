@@ -26,7 +26,6 @@ st.markdown("""
         font-size: 15px;
         margin-bottom: 15px;
     }
-    /* تنسيق الجدول الحقيقي للموبايل */
     .custom-table {
         width: 100%;
         border-collapse: collapse;
@@ -52,29 +51,18 @@ st.markdown("""
         font-weight: bold;
         padding-right: 8px !important;
     }
-    .negative-change {
-        color: white;
-        background-color: #d9534f !important; /* أحمر خفيف للهبوط */
-        border-radius: 4px;
-        padding: 2px 5px;
-        font-weight: bold;
-    }
-    .stable-change {
-        color: #666;
-    }
     </style>
 """, unsafe_allow_html=True)
 
 # عنوان التطبيق العلوي
 st.markdown('<div class="main-title">منظومة المربي الذكي Pro<br><span style="font-size: 14px; font-weight: normal;">المرجع العالمي للتحليل والأسعار</span></div>', unsafe_allow_html=True)
 
-# تاريخ اليوم
+# تاريخ اليوم تلقائي
 تاريخ_اليوم = datetime.date.today().strftime("%Y-%m-%d")
 st.markdown(f'<div class="sub-title">الأسعار الاسترشادية للسلع بالجمهورية - {تاريخ_اليوم}</div>', unsafe_allow_html=True)
 
 # البيانات المظبوطة بالترتيب والبدائل المبتكرة
 feed_prices = [
-    # --- قسم الذرة والصويا الأساسي ---
     {"name": "ذرة صفراء أرجنتيني 🇦🇷", "price": "14,100", "change": "-100", "note": "صب أرضة"},
     {"name": "ذرة صفراء برزيلي 🇧🇷", "price": "13,700", "change": "-100", "note": "صب أرضة"},
     {"name": "ذرة صفراء أوكراني 🇺🇦", "price": "12,200", "change": "0", "note": "صب أرضة"},
@@ -84,27 +72,31 @@ feed_prices = [
     {"name": "كسب صويا 46% Local", "price": "24,000", "change": "-300", "note": "صب أرضة"},
     {"name": "كسب صويا مستورد", "price": "25,500", "change": "0", "note": "صب أرضة"},
     
-    # --- قسم البدائل المبتكرة (مكان المشطوب أزرق) ---
-    {"name": "بسكويت ناعم (بديل طاقة)", "price": "السعر يدوي", "change": "0", "note": "معيا أرضة"},
-    {"name": "شيكولاتة هالك (بديل طاقة)", "price": "السعر يدوي", "change": "0", "note": "معيا أرضة"},
-    {"name": "بلح مفروم (بديل)", "price": "السعر يدوي", "change": "0", "note": "معيا أرضة"},
-    {"name": "نواة بلح مفرومة", "price": "السعر يدوي", "change": "0", "note": "معيا أرضة"},
-    {"name": "كسر مكرونة", "price": "السعر يدوي", "change": "0", "note": "معيا أرضة"},
-    {"name": "تفل برتقال", "price": "السعر يدوي", "change": "0", "note": "معيا أرضة"},
+    # --- البدائل المبتكرة مكان المشطوب ---
+    {"name": "بسكويت ناعم (بديل طاقة)", "price": "يدوي", "change": "0", "note": "معيا أرضة"},
+    {"name": "شيكولاتة هالك (بديل طاقة)", "price": "يدوي", "change": "0", "note": "معيا أرضة"},
+    {"name": "بلح مفروم (بديل)", "price": "يدوي", "change": "0", "note": "معيا أرضة"},
+    {"name": "نواة بلح مفرومة", "price": "يدوي", "change": "0", "note": "معيا أرضة"},
+    {"name": "كسر مكرونة", "price": "يدوي", "change": "0", "note": "معيا أرضة"},
+    {"name": "تفل برتقال", "price": "يدوي", "change": "0", "note": "معيا أرضة"},
     
-    # --- باقي الخامات الأساسية ---
+    # --- باقي الخامات ---
     {"name": "كسب عباد 36%", "price": "17,000", "change": "-100", "note": "معيا أرضة"},
     {"name": "دي دي جي (DDGS)", "price": "12,400", "change": "0", "note": "معيا أرضة"},
     {"name": "ردة (Gluten)", "price": "12,400", "change": "-200", "note": "معيا أرضة"},
     {"name": "جيلوثين", "price": "40,000", "change": "0", "note": "معيا أرضة"},
-    {"name": "مخلفات مخابز وحلويات", "price": "السعر يدوي", "change": "0", "note": "معيا وصال"},
-    {"name": "مخرجات مصانع مقرمشات", "price": "السعر يدوي", "change": "0", "note": "معيا وصال"},
+    {"name": "مخلفات مخابز وحلويات", "price": "يدوي", "change": "0", "note": "معيا وصال"},
+    {"name": "مخرجات مصانع مقرمشات", "price": "يدوي", "change": "0", "note": "معيا وصال"},
     {"name": "جلووفيد", "price": "13,100", "change": "-100", "note": "صب أرضة"},
     {"name": "دقيق Flour", "price": "15,600", "change": "0", "note": "صب أرضة"},
 ]
 
-# بناء الجدول كـ HTML حقيقي مخصص للموبايل
-table_html = """
+# بناء الجدول بطريقة مبسطة تماماً لتفادي أي خطأ سينتكس
+html_rows = ""
+for row in feed_prices:
+    html_rows += f"<tr><td class='text-right'>{row['name']}</td><td><b>{row['price']}</b></td><td>{row['change']}</td><td>{row['note']}</td></tr>"
+
+table_html = f"""
 <table class="custom-table">
     <tr>
         <th>اسم السلعة</th>
@@ -112,24 +104,11 @@ table_html = """
         <th>التغيير</th>
         <th>ملاحظات</th>
     </tr>
+    {html_rows}
+</table>
 """
 
-for row in feed_prices:
-    # تنسيق لون التغيير (أحمر لو سالب)
-    change_class = 'class="negative-change"' if '-' in row["change"] else 'class="stable-change"'
-    
-    table_html += f"""
-    <tr>
-        <td class="text-right">{row['name']}</td>
-        <td><b>{row['price']}</b></td>
-        <td><span {change_class}>{row['change']}</span></td>
-        <td>{row['note']}</td>
-    </tr>
-    """
-
-table_html += "</table>"
-
-# عرض الجدول الحقيقي
+# عرض الجدول
 st.markdown(table_html, unsafe_allow_html=True)
 
 # تذييل الصفحة
