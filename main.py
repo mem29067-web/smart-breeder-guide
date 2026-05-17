@@ -19,7 +19,7 @@ st.markdown("""
     }
     .sub-title {
         background-color: #176b99;
-        color: black;
+        color: White;
         padding: 6px;
         text-align: center;
         border-radius: 5px;
@@ -35,7 +35,7 @@ st.markdown("""
     }
     .custom-table th {
         background-color: #0b4c73;
-        color: white;
+        color: black;
         text-align: center;
         padding: 8px;
         border: 1px solid #ddd;
