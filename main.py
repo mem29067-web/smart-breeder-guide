@@ -1,104 +1,138 @@
 import streamlit as st
 import datetime
 
-# إعدادات الصفحة الأساسية
-st.set_page_config(page_title="منظومة المربي الذكي Pro", layout="wide")
+# إعدادات الصفحة الأساسية للموبايل
+st.set_page_config(page_title="منظومة المربي الذكي Pro", layout="centered")
 
-# تصميم المظهر (CSS) لضبط الألوان الزرقاء والخلفيات المريحة للعين
+# تصميم الجدول والألوان ليكون متناسق ومسطرة على شاشة الموبايل
 st.markdown("""
     <style>
     .main-title {
         background-color: #0b4c73;
         color: white;
-        padding: 15px;
+        padding: 12px;
         text-align: center;
-        border-radius: 10px;
-        font-size: 28px;
+        border-radius: 8px;
+        font-size: 22px;
         font-weight: bold;
-        margin-bottom: 20px;
+        margin-bottom: 15px;
     }
     .sub-title {
         background-color: #176b99;
         color: white;
-        padding: 8px;
+        padding: 6px;
         text-align: center;
         border-radius: 5px;
-        font-size: 18px;
+        font-size: 15px;
         margin-bottom: 15px;
+    }
+    /* تنسيق الجدول الحقيقي للموبايل */
+    .custom-table {
+        width: 100%;
+        border-collapse: collapse;
+        direction: rtl;
+        font-size: 14px;
+        margin-bottom: 20px;
+    }
+    .custom-table th {
+        background-color: #0b4c73;
+        color: white;
+        text-align: center;
+        padding: 8px;
+        border: 1px solid #ddd;
+    }
+    .custom-table td {
+        text-align: center;
+        padding: 8px;
+        border: 1px solid #ddd;
+        background-color: #f9f9f9;
+    }
+    .text-right {
+        text-align: right !important;
+        font-weight: bold;
+        padding-right: 8px !important;
+    }
+    .negative-change {
+        color: white;
+        background-color: #d9534f !important; /* أحمر خفيف للهبوط */
+        border-radius: 4px;
+        padding: 2px 5px;
+        font-weight: bold;
+    }
+    .stable-change {
+        color: #666;
     }
     </style>
 """, unsafe_allow_html=True)
 
 # عنوان التطبيق العلوي
-st.markdown('<div class="main-title">منظومة المربي الذكي Pro <br><span style="font-size: 16px;">المرجع العالمي للتحليل والأسعار</span></div>', unsafe_allow_html=True)
+st.markdown('<div class="main-title">منظومة المربي الذكي Pro<br><span style="font-size: 14px; font-weight: normal;">المرجع العالمي للتحليل والأسعار</span></div>', unsafe_allow_html=True)
 
-# تاريخ اليوم تلقائي
+# تاريخ اليوم
 تاريخ_اليوم = datetime.date.today().strftime("%Y-%m-%d")
-st.markdown(f'<div class="sub-title">الأسعار الاسترشادية للسلع بالجمهورية - يوم {تاريخ_اليوم}</div>', unsafe_allow_html=True)
+st.markdown(f'<div class="sub-title">الأسعار الاسترشادية للسلع بالجمهورية - {تاريخ_اليوم}</div>', unsafe_allow_html=True)
 
-# إنشاء أعمدة العرض الرئيسية للجدول
-col_name, col_price, col_change, col_note = st.columns([3, 2, 2, 2])
-
-with col_name:
-    st.markdown("**اسم السلعة**")
-with col_price:
-    st.markdown("**سعر الطن (جنيه)**")
-with col_change:
-    st.markdown("**التغيير**")
-with col_note:
-    st.markdown("**ملاحظات**")
-
-st.markdown("---")
-
-# القائمة الجديدة المعدلة بالبدائل المبتكرة بدون أي علم أمريكي
-feed_prices = {
+# البيانات المظبوطة بالترتيب والبدائل المبتكرة
+feed_prices = [
     # --- قسم الذرة والصويا الأساسي ---
-    "ذرة صفراء أرجنتيني 🇦🇷": {"price": 14100, "change": "-100", "note": "صب أرضة"},
-    "ذرة صفراء برزيلي 🇧🇷": {"price": 13700, "change": "-100", "note": "صب أرضة"},
-    "ذرة صفراء أوكراني 🇺🇦": {"price": 12200, "change": "0", "note": "صب أرضة"},
-    "ذرة فلاك": {"price": 15100, "change": "-100", "note": "صب أرضة"},
-    "بذرة الصويا SB": {"price": 23000, "change": "-300", "note": "صب أرضة"},
-    "كسب صويا 44% Local": {"price": 24000, "change": "-300", "note": "صب أرضة"},
-    "كسب صويا 46% Local": {"price": 24000, "change": "-300", "note": "صب أرضة"},
-    "كسب صويا مستورد": {"price": 25500, "change": "0", "note": "صب أرضة"},
+    {"name": "ذرة صفراء أرجنتيني 🇦🇷", "price": "14,100", "change": "-100", "note": "صب أرضة"},
+    {"name": "ذرة صفراء برزيلي 🇧🇷", "price": "13,700", "change": "-100", "note": "صب أرضة"},
+    {"name": "ذرة صفراء أوكراني 🇺🇦", "price": "12,200", "change": "0", "note": "صب أرضة"},
+    {"name": "ذرة فلاك", "price": "15,100", "change": "-100", "note": "صب أرضة"},
+    {"name": "بذرة الصويا SB", "price": "23,000", "change": "-300", "note": "صب أرضة"},
+    {"name": "كسب صويا 44% Local", "price": "24,000", "change": "-300", "note": "صب أرضة"},
+    {"name": "كسب صويا 46% Local", "price": "24,000", "change": "-300", "note": "صب أرضة"},
+    {"name": "كسب صويا مستورد", "price": "25,500", "change": "0", "note": "صب أرضة"},
     
-    # --- قسم البدائل المبتكرة (مكان المشطوب بالكامل) ---
-    "بسكويت ناعم (بديل طاقة)": {"price": 0, "change": "0", "note": "معيا أرضة"},
-    "شيكولاتة هالك (بديل طاقة)": {"price": 0, "change": "0", "note": "معيا أرضة"},
-    "بلح مفروم": {"price": 0, "change": "0", "note": "معيا أرضة"},
-    "نواة بلح": {"price": 0, "change": "0", "note": "معيا أرضة"},
-    "كسر مكرونة": {"price": 0, "change": "0", "note": "معيا أرضة"},
-    "تفل برتقال": {"price": 0, "change": "0", "note": "معيا أرضة"},
+    # --- قسم البدائل المبتكرة (مكان المشطوب أزرق) ---
+    {"name": "بسكويت ناعم (بديل طاقة)", "price": "السعر يدوي", "change": "0", "note": "معيا أرضة"},
+    {"name": "شيكولاتة هالك (بديل طاقة)", "price": "السعر يدوي", "change": "0", "note": "معيا أرضة"},
+    {"name": "بلح مفروم (بديل)", "price": "السعر يدوي", "change": "0", "note": "معيا أرضة"},
+    {"name": "نواة بلح مفرومة", "price": "السعر يدوي", "change": "0", "note": "معيا أرضة"},
+    {"name": "كسر مكرونة", "price": "السعر يدوي", "change": "0", "note": "معيا أرضة"},
+    {"name": "تفل برتقال", "price": "السعر يدوي", "change": "0", "note": "معيا أرضة"},
     
     # --- باقي الخامات الأساسية ---
-    "كسب عباد 36%": {"price": 17000, "change": "-100", "note": "معيا أرضة"},
-    "دي دي جي (DDGS)": {"price": 12400, "change": "0", "note": "معيا أرضة"},
-    "ردة (Gluten)": {"price": 12400, "change": "-200", "note": "معيا أرضة"},
-    "جيلوثين": {"price": 40000, "change": "0", "note": "معيا أرضة"},
-    "مخلفات مخابز وحلويات": {"price": 0, "change": "0", "note": "معيا وصال"},
-    "مخرجات مصانع مقرمشات": {"price": 0, "change": "0", "note": "معيا وصال"},
-    "جلووفيد": {"price": 13100, "change": "-100", "note": "صب أرضة"},
-    "دقيق Flour": {"price": 15600, "change": "0", "note": "صب أرضة"},
-}
+    {"name": "كسب عباد 36%", "price": "17,000", "change": "-100", "note": "معيا أرضة"},
+    {"name": "دي دي جي (DDGS)", "price": "12,400", "change": "0", "note": "معيا أرضة"},
+    {"name": "ردة (Gluten)", "price": "12,400", "change": "-200", "note": "معيا أرضة"},
+    {"name": "جيلوثين", "price": "40,000", "change": "0", "note": "معيا أرضة"},
+    {"name": "مخلفات مخابز وحلويات", "price": "السعر يدوي", "change": "0", "note": "معيا وصال"},
+    {"name": "مخرجات مصانع مقرمشات", "price": "السعر يدوي", "change": "0", "note": "معيا وصال"},
+    {"name": "جلووفيد", "price": "13,100", "change": "-100", "note": "صب أرضة"},
+    {"name": "دقيق Flour", "price": "15,600", "change": "0", "note": "صب أرضة"},
+]
 
-# عرض البيانات في الجدول
-for item, info in feed_prices.items():
-    c_name, c_price, c_change, c_note = st.columns([3, 2, 2, 2])
+# بناء الجدول كـ HTML حقيقي مخصص للموبايل
+table_html = """
+<table class="custom-table">
+    <tr>
+        <th>اسم السلعة</th>
+        <th>سعر الطن</th>
+        <th>التغيير</th>
+        <th>ملاحظات</th>
+    </tr>
+"""
+
+for row in feed_prices:
+    # تنسيق لون التغيير (أحمر لو سالب)
+    change_class = 'class="negative-change"' if '-' in row["change"] else 'class="stable-change"'
     
-    with c_name:
-        st.info(item)
-        
-    with c_price:
-        new_price = st.number_input(f"السعر ({item})", min_value=0, value=info["price"], step=50, key=item, label_visibility="collapsed")
-        feed_prices[item]["price"] = new_price
-        
-    with c_change:
-        st.success(info["change"])
-        
-    with c_note:
-        st.warning(info["note"])
+    table_html += f"""
+    <tr>
+        <td class="text-right">{row['name']}</td>
+        <td><b>{row['price']}</b></td>
+        <td><span {change_class}>{row['change']}</span></td>
+        <td>{row['note']}</td>
+    </tr>
+    """
 
-# تذييل الصفحة والملاحظات
+table_html += "</table>"
+
+# عرض الجدول الحقيقي
+st.markdown(table_html, unsafe_allow_html=True)
+
+# تذييل الصفحة
 st.markdown("---")
-st.markdown("<p style='text-align: center; color: #555;'>ملاحظة: الأسعار السابقة قد تتغير نتيجة آليات الطلب والعرض والكمية وطريقة السداد</p>", unsafe_allow_html=True)
-st.markdown("<div style='background-color: #0b4c73; color: white; padding: 10px; text-align: center; border-radius: 5px;'>*** للحصول على الأسعار الاسترشادية وخدمة الأخبار يرجى التواصل مع الإدارة: 01090102035 ***</div>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; color: #555; font-size: 12px;'>ملاحظة: الأسعار السابقة قد تتغير نتيجة آليات الطلب والعرض والكمية وطريقة السداد</p>", unsafe_allow_html=True)
+st.markdown("<div style='background-color: #0b4c73; color: white; padding: 10px; text-align: center; border-radius: 5px; font-size: 13px;'>*** للحصول على الأسعار الاسترشادية وخدمة الأخبار يرجى التواصل مع الإدارة: 01090102035 ***</div>", unsafe_allow_html=True)
