@@ -1,117 +1,109 @@
 import streamlit as st
+import datetime
 
-# 1. إعدادات الصفحة
+# إعدادات الصفحة الأساسية
 st.set_page_config(page_title="منظومة المربي الذكي Pro", layout="wide")
 
-# 2. التنسيق البرمجي (الواجهة الميتاليك الاحترافية)
+# تصميم المظهر (CSS) لضبط الألوان الزرقاء والخلفيات المريحة للعين
 st.markdown("""
     <style>
-    .main { direction: rtl; text-align: right; }
-    .stApp { background: linear-gradient(135deg, #0d1a10 0%, #1b3d26 100%) !important; }
-    .main-title { color: #ffffff; text-align: center; font-size: 35px !important; font-weight: 900; padding: 20px; }
-    .custom-table { width: 100%; border-collapse: collapse; background-color: rgba(255, 255, 255, 0.05); color: white; border-radius: 12px; overflow: hidden; direction: rtl; margin-bottom: 25px; }
-    .custom-table thead tr { background-color: #1e7e34; color: #ffffff; }
-    .custom-table th, .custom-table td { padding: 12px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); text-align: center; }
-    .locked-section { background: rgba(0,0,0,0.9); padding: 60px; border-radius: 20px; text-align: center; border: 2px dashed #f1c40f; margin-top: 20px; }
-    .whatsapp-btn { background-color: #25d366; color: white !important; padding: 12px 30px; border-radius: 30px; text-decoration: none; font-weight: bold; display: inline-block; }
-    label, p, h1, h2, h3, .stTabs [data-baseweb="tab"] { color: #ffffff !important; font-weight: bold !important; }
+    .main-title {
+        background-color: #0b4c73;
+        color: white;
+        padding: 15px;
+        text-align: center;
+        border-radius: 10px;
+        font-size: 28px;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+    .sub-title {
+        background-color: #176b99;
+        color: white;
+        padding: 8px;
+        text-align: center;
+        border-radius: 5px;
+        font-size: 18px;
+        margin-bottom: 15px;
+    }
+    .stNumberInput div {
+        margin-top: -5px;
+    }
     </style>
-    """, unsafe_allow_html=True)
+""", unsafe_allowed_html=True)
 
-st.markdown('<h1 class="main-title">🚜 منظومة المربي الذكي: النسخة الشاملة</h1>', unsafe_allow_html=True)
+# عنوان التطبيق العلوي
+st.markdown('<div class="main-title">منظومة المربي الذكي Pro <br><span style="font-size: 16px;">المرجع العالمي للتحليل والأسعار</span></div>', unsafe_allowed_html=True)
 
-# 3. إدارة البيانات وحالة الإدارة
-if 'is_admin' not in st.session_state: st.session_state.is_admin = False
+# تاريخ اليوم تلقائي
+تاريخ_اليوم = datetime.date.today().strftime("%Y-%m-%d")
+st.markdown(f'<div class="sub-title">الأسعار الاسترشادية للسلع بالجمهورية - يوم {تاريخ_اليوم}</div>', unsafe_allowed_html=True)
 
-# قائمة الأسعار الكاملة (البورصة اللي كانت ناقصة)
-if 'prices' not in st.session_state:
-    st.session_state.prices = {
-        "ذرة أرجنتيني": 13500, "ذرة برازيلي": 13500, "ذرة أوكراني": 12200,
-        "صويا 44%": 24000, "صويا 46%": 25000, "صويا فول فات": 34000,
-        "ردة محلي": 11200, "جيلوتين 60%": 42000, "دي دي جي (DDGS)": 18500,
-        "قمح روسي 11.5%": 12500, "كسب عباد مستورد": 17500, "زيت صويا خام": 52000,
-        "كسب سمسم": 21000, "كسر مكرونة": 13000, "بسكويت ناعم": 11500,
-        "نواة بلح مفروم": 10000, "تفل برتقال": 4000
+# إنشاء أعمدة العرض الرئيسية للجدول
+col_name, col_price, col_change, col_note = st.columns([3, 2, 2, 2])
+
+with col_name:
+    st.markdown("**اسم السلعة**")
+with col_price:
+    st.markdown("**سعر الطن (جنيه)**")
+with col_change:
+    st.markdown("**التغيير**")
+with col_note:
+    st.markdown("**ملاحظات**")
+
+st.markdown("---")
+
+# قائمة الخامات والبدائل بالترتيب المظبوط ونظيفة تماماً
+if 'feed_prices' not in st.session_state:
+    st.session_state.feed_prices = {
+        # --- قسم الذرة والصويا الأساسي ---
+        "ذرة صفراء أرجنتيني 🇦🇷": {"price": 14100, "change": "-100", "note": "صب أرضة"},
+        "ذرة صفراء برزيلي 🇧🇷": {"price": 13700, "change": "-100", "note": "صب أرضة"},
+        "ذرة صفراء أوكراني 🇺🇦": {"price": 12200, "change": "0", "note": "صب أرضة"},
+        "ذرة فلاك": {"price": 15100, "change": "-100", "note": "صب أرضة"},
+        "بذرة الصويا SB": {"price": 23000, "change": "-300", "note": "صب أرضة"},
+        "كسب صويا 44% Local": {"price": 24000, "change": "-300", "note": "صب أرضة"},
+        "كسب صويا 46% Local": {"price": 24000, "change": "-300", "note": "صب أرضة"},
+        "كسب صويا مستورد": {"price": 25500, "change": "0", "note": "صب أرضة"},
+        
+        # --- قسم البدائل المبتكرة (مكان المشطوب بالكامل) ---
+        "بسكويت ناعم (بديل طاقة)": {"price": 0, "change": "0", "note": "معيا أرضة"},
+        "شيكولاتة هالك (بديل طاقة)": {"price": 0, "change": "0", "note": "معيا أرضة"},
+        "بلح مفروم": {"price": 0, "change": "0", "note": "معيا أرضة"},
+        "نواة بلح": {"price": 0, "change": "0", "note": "معيا أرضة"},
+        "كسر مكرونة": {"price": 0, "change": "0", "note": "معيا أرضة"},
+        "تفل برتقال": {"price": 0, "change": "0", "note": "معيا أرضة"},
+        
+        # --- باقي الخامات الأساسية ---
+        "كسب عباد 36%": {"price": 17000, "change": "-100", "note": "معيا أرضة"},
+        "دي دي جي (DDGS)": {"price": 12400, "change": "0", "note": "معيا أرضة"},
+        "ردة (Gluten)": {"price": 12400, "change": "-200", "note": "معيا أرضة"},
+        "جيلوثين": {"price": 40000, "change": "0", "note": "معيا أرضة"},
+        "مخلفات مخابز وحلويات": {"price": 0, "change": "0", "note": "معيا وصال"},
+        "مخرجات مصانع مقرمشات": {"price": 0, "change": "0", "note": "معيا وصال"},
+        "جلووفيد": {"price": 13100, "change": "-100", "note": "صب أرضة"},
+        "دقيق Flour": {"price": 15600, "change": "0", "note": "صب أرضة"},
     }
 
-def check_access():
-    if not st.session_state.is_admin:
-        st.markdown(f"""
-        <div class="locked-section">
-            <h2 style="color: #f1c40f;">🔒 القسم مغلق للمشتركين فقط</h2>
-            <p style="font-size: 18px;">للحصول على التحاليل الفنية واستخدام الخلاط الذكي، يرجى الاشتراك</p>
-            <a href="https://wa.me/201090102035" class="whatsapp-btn">تواصل واتساب: 01090102035</a>
-        </div>
-        """, unsafe_allow_html=True)
-        return False
-    return True
-
-tab1, tab2, tab3, tab4 = st.tabs(["💰 اسعار الخامات", "🔬 تحليل خامات الأعلاف", "🧮 حاسبة الأعلاف", "⚙️ الإدارة"])
-
-# --- 1. أسعار الخامات (البورصة الكاملة) ---
-with tab1:
-    st.markdown("### 📊 بورصة الخامات المحدثة")
-    html_prices = """<table class="custom-table"><thead><tr><th>الخامة</th><th>السعر (طن)</th><th>التغيير</th></tr></thead><tbody>"""
-    for k, v in st.session_state.prices.items():
-        html_prices += f"<tr><td>{k}</td><td>{v:,} ج</td><td>-</td></tr>"
-    st.markdown(html_prices + "</tbody></table>", unsafe_allow_html=True)
-
-# --- 2. تحليل الخامات (مقسم أساسي وبدائل) ---
-with tab2:
-    if check_access():
-        st.success("🔓 وضع المدير نشط: موسوعة التحليل")
-        c1, c2 = st.columns(2)
-        with c1:
-            st.markdown("#### 🌾 خامات أساسية")
-            st.markdown("""<table class="custom-table"><thead><tr><th>الخامة</th><th>بروتين %</th><th>طاقة %</th></tr></thead><tbody>
-                <tr><td>ذرة صفراء</td><td>8.5%</td><td>88%</td></tr>
-                <tr><td>صويا 46%</td><td>46%</td><td>78%</td></tr>
-                <tr><td>ردة محلي</td><td>14%</td><td>65%</td></tr>
-                <tr><td>جيلوتين 60%</td><td>60%</td><td>92%</td></tr>
-                <tr><td>دي دي جي</td><td>27%</td><td>82%</td></tr>
-            </tbody></table>""", unsafe_allow_html=True)
-        with c2:
-            st.markdown("#### 💡 البدائل المبتكرة")
-            st.markdown("""<table class="custom-table"><thead><tr><th>البديل</th><th>بروتين %</th><th>طاقة %</th></tr></thead><tbody>
-                <tr><td>بسكويت مصانع</td><td>9%</td><td>95%</td></tr>
-                <tr><td>شيكولاتة هالك</td><td>6%</td><td>98%</td></tr>
-                <tr><td>بلح مفروم</td><td>4%</td><td>75%</td></tr>
-                <tr><td>تفل برتقال</td><td>6.5%</td><td>70%</td></tr>
-                <tr><td>كسر مكرونة</td><td>11%</td><td>90%</td></tr>
-            </tbody></table>""", unsafe_allow_html=True)
-
-# --- 3. حاسبة الأعلاف (الخلاط العملاق بالبدائل) ---
-with tab3:
-    if check_access():
-        st.subheader("🧮 الخلاط الذكي: احسب تركيبتك وبدائلك")
-        col_c1, col_c2, col_c3 = st.columns(3)
-        w_corn = col_c1.number_input("ذرة (كجم):", 0, 1000, 500)
-        w_soy = col_c2.number_input("صويا (كجم):", 0, 1000, 200)
-        w_bran = col_c3.number_input("ردة (كجم):", 0, 1000, 100)
-        w_glu = col_c1.number_input("جيلوتين/دي دي جي (كجم):", 0, 1000, 50)
-        w_alt = col_c2.number_input("إجمالي البدائل (كجم):", 0, 1000, 100)
+# عرض البيانات في الجدول مع إمكانية تعديل الأسعار يدويًا
+for item, info in st.session_state.feed_prices.items():
+    c_name, c_price, c_change, c_note = st.columns([3, 2, 2, 2])
+    
+    with c_name:
+        st.info(item)
         
-        if st.button("🚀 احسب تحليل الخلطة"):
-            total_w = w_corn + w_soy + w_bran + w_glu + w_alt
-            prot = ((w_corn*8.5) + (w_soy*46) + (w_bran*14) + (w_glu*40) + (w_alt*8)) / total_w
-            st.info(f"إجمالي الوزن: {total_w} كجم | البروتين المتوقع: {prot:.2f}%")
+    with c_price:
+        # خانة إدخال رقمية لتعديل السعر بسهولة من الموبايل
+        new_price = st.number_input(f"السعر ({item})", min_value=0, value=info["price"], step=50, label_visibility="collapsed")
+        st.session_state.feed_prices[item]["price"] = new_price
+        
+    with c_change:
+        st.success(info["change"])
+        
+    with c_note:
+        st.warning(info["note"])
 
-# --- 4. الإدارة (تسجيل الدخول الصحيح) ---
-with tab4:
-    st.subheader("🔐 لوحة تحكم المدير")
-    if not st.session_state.is_admin:
-        pwd = st.text_input("أدخل كلمة المرور السرية:", type="password")
-        if st.button("تفعيل وضع المدير"):
-            if pwd == "199208":
-                st.session_state.is_admin = True
-                st.success("تم الفتح بنجاح!")
-                st.rerun()
-            else:
-                st.error("❌ الباسورد غلط")
-    else:
-        st.success("✅ وضع المدير نشط - جميع الأقسام مفتوحة")
-        if st.button("قفل البرنامج (خروج)"):
-            st.session_state.is_admin = False
-            st.rerun()
-
-st.markdown("<br><p style='text-align:center; opacity:0.5;'>تطوير: منظومة المربي الذكي 2026</p>", unsafe_allow_html=True)
+# تذييل الصفحة والملاحظات
+st.markdown("---")
+st.markdown("<p style='text-align: center; color: #555;'>ملاحظة: الأسعار السابقة قد تتغير نتيجة آليات الطلب والعرض والكمية وطريقة السداد</p>", unsafe_allowed_html=True)
+st.markdown("<div style='background-color: #0b4c73; color: white; padding: 10px; text-align: center; border-radius: 5px;'>*** للحصول على الأسعار الاسترشادية وخدمة الأخبار يرجى التواصل مع الإدارة: 01090102035 ***</div>", unsafe_allowed_html=True)
