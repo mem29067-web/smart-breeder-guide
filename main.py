@@ -48,7 +48,7 @@ st.markdown("""
     }
     .text-right {
         text-align: right !important;
-        font-weight: sky blue;
+        font-weight:Royal Blue;
         padding-right: 8px !important;
     }
     </style>
