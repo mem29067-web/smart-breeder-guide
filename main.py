@@ -12,7 +12,7 @@ st.sidebar.markdown("### 🛠️ قائمة التحكم")
 )
 
 # ---------------------------------------------------------
-# 1. قسم جدول الأسعار (التعديل الجديد المسطرة)
+# 1. قسم جدول الأسعار (مع تعديل لون خط الخامات للأسود)
 # ---------------------------------------------------------
 if صفحة == "📊 جدول الأسعار والبدائل":
     st.markdown("""
@@ -21,7 +21,16 @@ if صفحة == "📊 جدول الأسعار والبدائل":
         .sub-title { background-color: #176b99; color: white; padding: 6px; text-align: center; border-radius: 5px; font-size: 15px; margin-bottom: 15px; }
         .custom-table { width: 100%; border-collapse: collapse; direction: rtl; font-size: 14px; margin-bottom: 20px; }
         .custom-table th { background-color: #0b4c73; color: white; text-align: center; padding: 8px; border: 1px solid #ddd; }
-        .custom-table td { text-align: center; padding: 8px; border: 1px solid #ddd; background-color: #f9f9f9; }
+        
+        /* تعديل خلايا الجدول ليكون لون الخط أسود صريح */
+        .custom-table td { 
+            text-align: center; 
+            padding: 8px; 
+            border: 1px solid #ddd; 
+            background-color: #f9f9f9; 
+            color: #000000 !important; /* هنا لون الخط أسود صريح */
+        }
+        
         .text-right { text-align: right !important; font-weight: bold; padding-right: 8px !important; }
         </style>
     """, unsafe_allow_html=True)
@@ -41,7 +50,7 @@ if صفحة == "📊 جدول الأسعار والبدائل":
         {"name": "كسب صويا 46% Local", "price": "24,000", "change": "-300", "note": "صب أرضة"},
         {"name": "كسب صويا مستورد", "price": "25,500", "change": "0", "note": "صب أرضة"},
         
-        # البدائل المبتكرة المضافة
+        # البدائل المبتكرة مكان المشطوب
         {"name": "بسكويت ناعم (بديل طاقة)", "price": "يدوي", "change": "0", "note": "معيا أرضة"},
         {"name": "شيكولاتة هالك (بديل طاقة)", "price": "يدوي", "change": "0", "note": "معيا أرضة"},
         {"name": "بلح مفروم (بديل)", "price": "يدوي", "change": "0", "note": "معيا أرضة"},
@@ -71,7 +80,6 @@ elif صفحة == "🥣 خلاط العلف الذكي":
     st.title("🥣 خلاط ومحلل نسب العلف")
     st.subheader("احسب خلطتك ونسبة البروتين والطاقة")
     
-    # نموذج مبسط لتركيبة العلف
     ذرة = st.number_input("كمية الذرة في الخلطة (كجم):", min_value=0, value=600)
     صويا = st.number_input("كمية كسب الصويا (كجم):", min_value=0, value=200)
     بديل = st.number_input("كمية البديل المبتكر (بسكويت/بلح) (كجم):", min_value=0, value=100)
@@ -81,7 +89,6 @@ elif صفحة == "🥣 خلاط العلف الذكي":
     st.metric("إجمالي وزن الخلطة (كجم):", إجمالي)
     
     if st.button("🧮 احسب تحليل التركيبة"):
-        # حسابات افتراضية سريعة للبروتين كمثال برمجى
         بروتين_تقريبي = ((ذرة*9) + (صويا*44) + (بديل*10) + (ردة*14)) / (إجمالي if إجمالي > 0 else 1)
         st.success(f"📈 نسبة البروتين التقريبية في الخلطة: {بروتين_تقريبي:.2f}%")
 
@@ -102,7 +109,7 @@ elif صفحة == "📈 المدير المالي (الحاسبة)":
     if المتبقي_للعلف >= 0:
         st.success(f"💰 المبلغ المتبقي لتغطية العلف والرعاية: {المتبقي_للعلف:,} جنيه")
     else:
-        st.error(f"⚠️ انتبه: رأس المال لا يكفي! العجز: {abs(المتبقي_للعلف):,} جنيه")
+        st.error(f"⚠️ العجز: {abs(المتبقي_للعلف):,} جنيه")
 
 # ---------------------------------------------------------
 # 4. قسم إدارة المخزن
