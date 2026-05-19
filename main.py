@@ -9,7 +9,7 @@ st.markdown("""
     <style>
     .main-title {
         background-color: #0b4c73;
-        color: white;
+        color: Royal Blue;
         padding: 12px;
         text-align: center;
         border-radius: 8px;
